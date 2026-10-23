@@ -1,0 +1,10 @@
+# bundle patch for dsh-qq-voice
+#
+# 这个插件不进 profile 顶层花名册 —— 它只该活在 QQ 那个 preset 里面。
+# 挂载点在 cordis.yml 的 `preset-qq` 里，不在 dependencies/bundles 里。
+#
+# 留这个文件是因为 package.json 声明了 dsh.bundle.patch；就算哪天有人
+# 把它当普通 bundle 装，插进来也只是一段提示词，不碰任何运行时状态。
+- insert:
+    - id: qq-voice
+      name: dsh-qq-voice

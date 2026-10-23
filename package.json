@@ -1,0 +1,27 @@
+{
+  "name": "dsh-qq-voice",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Mounts a per-channel speaking-rules file into the QQ preset's system prompt only, so that channel answers in one or two lines while every other channel stays untouched.",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./package.json": "./package.json"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "license": "MIT",
+  "author": "hzh5021",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hzh5021/dsh-qq-voice.git"
+  },
+  "homepage": "https://github.com/hzh5021/dsh-qq-voice#readme",
+  "engines": {
+    "node": ">=18"
+  }
+}
