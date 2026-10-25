@@ -28,6 +28,42 @@ dsh plugin add hzh5021/dsh-qq-voice
 - 真正的挂载点是 profile 里那个 `preset-<渠道>` 的插件行（放在 preset 里，它才只影响那一段会话）。
 - 包里的 `cordis.patch.yml` 留着，是因为 `package.json` 声明了 `dsh.bundle.patch`；万一有人把它当普通 bundle 装进来，插进去也只是一段提示词，不碰任何运行时状态。
 
+### 挂进目标渠道的 preset（具体做法）
+
+以 `dsh-qq` 那条线为例，profile 的 `cordis.patch.yml` 里要动三处：
+
+```yaml
+# 1) 插插件行，并指向口径文件所在的目录
+- insert:
+    - id: qq-voice
+      name: dsh-qq-voice
+      config:
+        home: /path/to/your/home     # 放着那份渠道口径 md 的目录
+        file: QQ线口径.md
+
+# 2) 目标渠道的 preset 里带上它 —— 这一行才决定「只影响那条线」
+- id: preset-qq
+  name: '@deepseek-ai/dsh-agent-preset'
+  config:
+    id: qq
+    order: 3
+    plugins:
+      - id: persona
+        name: '@deepseek-ai/dsh-persona'
+      # …其余子插件照你别的 preset 抄…
+      - id: qq-voice
+        name: dsh-qq-voice
+
+# 3) 让那条线走这个 preset（dsh-qq 的入口配置）
+- id: qq
+  name: dsh-qq
+  config:
+    # …wsUrl / ownerId / cwd…
+    agentPreset: qq
+```
+
+第 2 步是关键：只做第 1 步而不把它列进 preset，这段口径要么不生效，要么挂在所有会话上（取决于你是不是把它放进了 profile 顶层花名册）。**别放顶层**——那份口径是给一条线的，不是给所有会话的。
+
 ## 配置
 
 | 键 | 默认 | 说明 |
